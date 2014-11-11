@@ -320,6 +320,3 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     f.close()
 
 
-#encipher("/home/yurifw/python/imagem.jpg",[21,32,43,65,54,43,32,54,65,76,87,54,32,23,43,54],16,16,True,"/home/yurifw/python/criptograma/imagem.alpha")
-
-#encipher("/home/yurifw/python/criptograma/imagem.alpha",[21,32,43,65,54,43,32,54,65,76,87,54,32,23,43,54],16,16,False,"/home/yurifw/python/criptograma/imagem.jpg")
