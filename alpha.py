@@ -195,7 +195,7 @@ def l_alpha(e):
 
 def encipher_block(text, key, rounds, block_size, encipher):
     """encipher or decipher the given text (True to encipher and False to decipher), using the given key(not expanded)
-    the algorithm will do nr rounds. For now, the only block_size ssupported is 16
+    the algorithm will do nr rounds. For now, the only block_size ssupported is 16, and the rounds should also be 16
     """
     #adicionar parametro block_size e trocar as ocorrencias de 16 por este parametro e 8 por este parametro/2
 
@@ -276,7 +276,8 @@ def unpad(padded_block):
 def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     """encipher or decipher a file, independent of the size. original name file is kept in first block, original
     extension is kept in the second block. input_file must be the whole absolute path to the file (including
-    name and extension)
+    name and extension), when deciphering, output_file should be a path to a directory (name and file extensions should
+    be in the first and second blocks)
     """
     bytes = bytearray()
 
@@ -298,7 +299,7 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     for i in range(len(bytes)/block_size):
         result.extend(encipher_block(get_block(bytes, i, block_size), key, rounds, block_size, enciphering))
     if not enciphering:  # retrieving original name and extension from first and second block
-        output_file = output_file[:output_file.rfind(os.sep)+1]
+        output_file = output_file + os.sep
 
         name_bytes = get_block(result, 0, block_size)
         unpad(name_bytes)
@@ -318,3 +319,7 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     f.write(result)
     f.close()
 
+
+#encipher("/home/yurifw/python/imagem.jpg",[21,32,43,65,54,43,32,54,65,76,87,54,32,23,43,54],16,16,True,"/home/yurifw/python/criptograma/imagem.alpha")
+
+#encipher("/home/yurifw/python/criptograma/imagem.alpha",[21,32,43,65,54,43,32,54,65,76,87,54,32,23,43,54],16,16,False,"/home/yurifw/python/criptograma/imagem.jpg")
