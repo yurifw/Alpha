@@ -197,8 +197,6 @@ def encipher_block(text, key, rounds, block_size, encipher):
     """encipher or decipher the given text (True to encipher and False to decipher), using the given key(not expanded)
     the algorithm will do nr rounds. For now, the only block_size ssupported is 16, and the rounds should also be 16
     """
-    #adicionar parametro block_size e trocar as ocorrencias de 16 por este parametro e 8 por este parametro/2
-
     expanded_key = key_expand(key, rounds * block_size)
     key = [[None]*block_size]*rounds
     for i in range(rounds):
@@ -281,15 +279,13 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     """
     bytes = bytearray()
 
-    if enciphering:  # storing name and extension in first and second blocks
+    if enciphering:  # storing file extension in first block
         file_name = input_file[input_file.rfind(os.sep)+1:]
         extension = file_name[file_name.find(".")+1:]
-        name_only = file_name.replace("."+extension, "")
+        bytes = bytearray()
 
-        bytes = bytearray(name_only)
-        pad(bytes, block_size)
-
-        bytes.extend(bytearray(extension))
+        for c in extension:
+            bytes.append(ord(c))
         pad(bytes, block_size)
 
     bytes.extend(read_file(input_file))
@@ -298,25 +294,16 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     result = bytearray()
     for i in range(len(bytes)/block_size):
         result.extend(encipher_block(get_block(bytes, i, block_size), key, rounds, block_size, enciphering))
-    if not enciphering:  # retrieving original name and extension from first and second block
-        output_file = output_file + os.sep
-
-        name_bytes = get_block(result, 0, block_size)
-        unpad(name_bytes)
-        name = ""
-        for b in name_bytes:
-            name += chr(b)
-        extension_bytes = get_block(result, 1, block_size)
+    if not enciphering:  # retrieving original extension from first block
+        extension_bytes = get_block(result, 0, block_size)
         unpad(extension_bytes)
-        extension=""
+        extension = ""
         for b in extension_bytes:
             extension += chr(b)
-        output_file = output_file + name + "." + extension
-        result = result[block_size*2:]
+        output_file = output_file + "." + extension
+        result = result[block_size:]  # ignoring first block because it just contained the extension, not relevant info
     unpad(result)
 
     f = open(output_file, "w+")
     f.write(result)
     f.close()
-
-

@@ -20,10 +20,8 @@ class Example(Frame):
         def change_text_button():
             if encrypt.get():
                 btn_encrypt.config(text="Criptografar")
-                frame_saida.config(text="Arquivo de Saida")
             else:
                 btn_encrypt.config(text="Descriptografar")
-                frame_saida.config(text="Diretorio de Saida")
 
         def generate_key():
             directory = tkFileDialog.asksaveasfilename(defaultextension='.key')
@@ -41,10 +39,7 @@ class Example(Frame):
 
         def set_arquivo_saida():
             txt_arquivo_saida.delete(0, END)
-            if encrypt.get():
-                txt_arquivo_saida.insert(0, tkFileDialog.asksaveasfilename(defaultextension='.alpha'))
-            else:
-                txt_arquivo_saida.insert(0, tkFileDialog.askdirectory())
+            txt_arquivo_saida.insert(0, tkFileDialog.asksaveasfilename())
 
         def run_alpha():
                 key = alpha.read_file(txt_chave.get())
@@ -83,7 +78,7 @@ class Example(Frame):
         btn_arquivo_entrada = Button(frame_entrada, text="Pesquisar", width=9, command=set_arquivo_entrada)
         btn_arquivo_entrada.pack(fill=X, expand=0, side=RIGHT)
 
-        frame_saida = LabelFrame(self, text="Diretorio de Saida")
+        frame_saida = LabelFrame(self, text="Arquivo de Saida")
         frame_saida.pack(fill=BOTH, expand=1, side=TOP)
         txt_arquivo_saida = Entry(frame_saida)
         txt_arquivo_saida.pack(fill=X, expand=1, side=LEFT)
