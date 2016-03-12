@@ -307,3 +307,21 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
     f = open(output_file, "w+")
     f.write(result)
     f.close()
+
+"""
+bs = 16 #block size
+print "plain text: ",
+plain_text=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+print "key: ",
+key=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+print key
+
+print "cipher text: ",
+cipher_text = encipher_block(plain_text, key, 16, bs, True)
+print cipher_text
+
+print "deciphered: ",
+deciphered = encipher_block(cipher_text, key, 16, bs, False)
+print deciphered
+"""
