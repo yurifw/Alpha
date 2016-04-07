@@ -233,7 +233,11 @@ def key_expand(key, size):
 
 def n_alpha(xy, key, block_index):
     """n_alpha transformation"""
-    return s_box(xy, key, block_index)
+    #transforming a vector of vectors into a single vector
+    extended_key =[]
+    for i in range(len(key)):
+        extended_key.extend(key[i])
+    return s_box(xy, extended_key, block_index)
 
 
 def l_alpha(e):
@@ -374,7 +378,7 @@ def encipher_block(text, key, rounds, block_size, encipher, current_block):
 
         for j in range(half_block):
             byte = temporary[j]
-            n_alpha(byte, key[0], current_block)
+            n_alpha(byte, key, current_block)
             temporary[j] = byte
 
         for j in range(half_block):
@@ -445,19 +449,4 @@ def encipher(input_file, key, rounds, block_size, enciphering, output_file):
 
 
 
-bs = 32 #block size
-print "plain text: ",
-plain_text=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-print plain_text
 
-print "key: ",
-key=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-print key
-
-print "cipher text: ",
-cipher_text = encipher_block(plain_text, key, 16, bs, True, 0)
-print cipher_text
-
-print "deciphered: ",
-deciphered = encipher_block(cipher_text, key, 16, bs, False, 0)
-print deciphered
